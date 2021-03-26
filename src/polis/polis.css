@@ -1,0 +1,43 @@
+StackPane {
+    -fx-pref-width: 800;
+    -fx-pref-height: 450;
+    -fx-background-color: beige;
+}
+
+Button {
+    -fx-min-height: 40;
+    -fx-min-width: 65;
+    -fx-background-size: 50;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+
+#cityMapListener {
+    -fx-background-color: transparent;
+}
+
+#buttonResidence {
+    -fx-background-image: url("../polis/buttons/residence.png");
+}
+
+#buttonBulldozer {
+    -fx-background-image: url("../polis/buttons/bulldozer.png");
+}
+
+#buttonCommerce {
+    -fx-background-image: url("../polis/buttons/commerce.png");
+}
+
+#buttonIndustry {
+    -fx-background-image: url("../polis/buttons/industry.png");
+}
+
+#buttonRoad {
+    -fx-background-image: url("../polis/buttons/road.png");
+}
+
+#buttonSelection {
+    -fx-background-image: url("../polis/buttons/selection.png");
+}
+
+
