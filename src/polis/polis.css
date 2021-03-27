@@ -10,6 +10,7 @@ Button {
     -fx-background-size: 50;
     -fx-background-repeat: no-repeat;
     -fx-background-position: 50%;
+    -fx-focus-traversable: false;
 }
 
 #cityMapListener {

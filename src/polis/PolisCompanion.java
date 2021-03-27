@@ -31,10 +31,8 @@ public class PolisCompanion {
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
         cityMapListener.setViewOrder(-100);
-        // Ik laat de cityMap alle toetsenbordgebeurtenissen detecteren, aangezien enkel de
-        // voorouders stackPane en Viewport deze gebeurtenissen verwerken (en CityMapListener dus niet).
-        cityMap.setFocusTraversable(true);
-        cityMap.requestFocus();
+        viewport.setFocusTraversable(true);
+        viewport.requestFocus();
         stackPane.setOnKeyPressed(keyEvent -> {
             if (KEYEVENTS.containsKey(keyEvent.getCode())) {
                 KEYEVENTS.get(keyEvent.getCode()).run();

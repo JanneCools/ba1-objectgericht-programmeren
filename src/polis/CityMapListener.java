@@ -9,26 +9,21 @@ import javafx.scene.paint.Paint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import static java.lang.Integer.max;
-import static java.lang.Integer.min;
-
 
 public class CityMapListener extends Pane implements InvalidationListener {
 
     private final CityMap model;
     private static final int CELL_SIZE = 64;
 
+    // Ik gebruik extra klassen als soort van "subluisteraars" (maar deze klassen implementeren de interface
+    // InvalidationListener niet) die zich bezighouden met 1 soort tegel.
+    // Deze klasse "CityMapListener" ontvangt dus alle veranderingen en laat RoadListener en BuildingListener
+    // de veranderingen aanbrengen die horen bij een specifiek soort tegel.
+    private final RoadListener roadListener;
+    private final BuildingListener buildingListener;
+
     // Veld om bij te houden waar de muis zich momenteel bevind (in het formaat "r-k" zoals bij de lijsten in het model)
     private String key;
-
-    // Veld om alle tegels bij te houden die door de gebruiker worden aangeduid om er een weg van de maken
-    // In de lijst worden de coördinaten bijgehouden in de vorm "r-k"
-    private final ArrayList<String> selectedRoadKeys;
-
-    // Veld om na te kijken of een gebouw geplaatst mag worden, ik maak er een veld van zodat die
-    // makkelijk door meerdere methodes gebruikt kunnen worden. Het is een array
-    // omdat er 4 tegels beschikbaar moeten zijn om een gebouw te mogen plaatsen.
-    private final boolean[] availabilityBuilding;
 
     /*
         Per tegel hou ik zijn originele achtergrond bij zodat, wanneer de cursor
@@ -46,12 +41,12 @@ public class CityMapListener extends Pane implements InvalidationListener {
             "commerce", this::checkBuildingAvailability, "residence", this::checkBuildingAvailability
     );
 
-    // Als de knop van de weg is ingedrukt, moet er niets gedaan worden bij mouseClicked,
-    // om de weg te maken gebruik ik immers mousePressed, mouseDragged en mouseReleased
+    // Als de knop van de weg is ingedrukt, moet er niets gedaan worden bij mouseClicked.
+    // Om de weg te maken gebruik ik immers mousePressed, mouseDragged en mouseReleased
     private final Map<String, Runnable> MOUSECLICKED_METHODS = Map.of(
             "bulldozer", this::removeTile, "residence", this::addBuilding,
             "industry", this::addBuilding, "commerce", this::addBuilding,
-            "selection", this::changeBuildingImage
+            "selection", this::changeBuildingImage, "road", () -> {}
     );
 
     public CityMapListener(CityMap model) {
@@ -62,16 +57,16 @@ public class CityMapListener extends Pane implements InvalidationListener {
         setPrefHeight(CELL_SIZE * 32);
         originalPaint = new HashMap<>();
         for (PolygonTile tile : model.getPolygonMap().values()) {
-            Paint paint = tile.getFill();
-            originalPaint.put(tile, paint);
+            originalPaint.put(tile, tile.getFill());
         }
         key = "";
-        availabilityBuilding = new boolean[4];
-        selectedRoadKeys = new ArrayList<>();
+        roadListener = new RoadListener(model, this, originalPaint);
+        buildingListener = new BuildingListener(model, this, originalPaint);
     }
 
     @Override
     public void invalidated(Observable observable) {
+        setOriginalPaint();
         String button = model.getButtonSelected();
         setOnMouseMoved(mouseEvent -> {
             model.getPolygonMap().values().forEach(tile -> tile.setFill(originalPaint.get(tile)));
@@ -81,37 +76,32 @@ public class CityMapListener extends Pane implements InvalidationListener {
         });
         setOnMouseClicked(mouseEvent -> {
             key = getKey(mouseEvent);
-            if (MOUSECLICKED_METHODS.containsKey(button)) {
-                MOUSECLICKED_METHODS.get(button).run();
-            }
+            MOUSECLICKED_METHODS.get(button).run();
         });
-        //Bij mousePressed, -dragged en -released moet er enkel iets gedaan worden als de knop van de weg is ingedrukt
+        //Bij mousePressed en -released moet er enkel iets gedaan worden als de knop van de weg is ingedrukt.
+        // Bij mouseDragged wordt er iets gedaan als de knop van de weg of van de bulldozer wordt ingedrukt
         setOnMousePressed(mouseEvent -> {
             key = getKey(mouseEvent);
             if (button.equals("road")) {
-                checkAvailability(key);
-                selectedRoadKeys.add(key);
+                roadListener.addFirstRoadKey(key);
             }
         });
         setOnMouseDragged(mouseEvent -> {
             key = getKey(mouseEvent);
             if (button.equals("road")) {
-                createLRoad();
+                roadListener.createLRoad(key);
+            } else if (button.equals("bulldozer")) {
+                setOriginalPaint();
+                removeTile();
+                if (model.getPolygonMap().containsKey(key)) {
+                    PolygonTile tile = model.getPolygonMap().get(key);
+                    tile.setStroke(Color.RED);
+                }
             }
         });
         setOnMouseReleased(mouseEvent -> {
             if (button.equals("road")) {
-                for (String key : selectedRoadKeys) {
-                    if (checkAvailability(key)) {
-                        int r = Integer.parseInt(key.split("-")[0]);
-                        int k = Integer.parseInt(key.split("-")[1]);
-                        RoadTile roadTile = new RoadTile(CELL_SIZE, r, k);
-                        model.userPolygons.put(r + "-" + k, roadTile);
-                        model.getChildren().add(roadTile);
-                        roadTile.changeBackground(model, originalPaint, true);
-                    }
-                }
-                selectedRoadKeys.clear();
+                roadListener.placeRoad();
                 setOriginalPaint();
             }
         });
@@ -122,14 +112,14 @@ public class CityMapListener extends Pane implements InvalidationListener {
     // Deze rij- en kolom coördinaten vormen de sleutel van de map "polygonMap" en de map "userPolygons"
     // in de klasse CityMap.
     private String getKey(MouseEvent mouseEvent) {
-        int x = (int) mouseEvent.getX();
-        int y = (int) mouseEvent.getY();
+        double x = mouseEvent.getX();
+        double y = mouseEvent.getY();
         int r = (int) (2 * y - x + getWidth() / 2) / (2 * CELL_SIZE);
         int k = (int) (x + 2 * y - getWidth() / 2) / (2 * CELL_SIZE);
         return r + "-" + k;
     }
 
-    private void setOriginalPaint() {
+    public void setOriginalPaint() {
         for (PolygonTile tile : originalPaint.keySet()) {
             tile.setFill(originalPaint.get(tile));
             tile.setStroke(null);
@@ -158,7 +148,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
 
     // Kijken of de weg of het gebouw geplaatst kan worden, zo niet dan wordt de achtergond rood gekleurd
     // en geeft de methode false terug, anders wordt de achtergrond blauw en wordt true teruggegeven
-    private boolean checkAvailability(String key) {
+    public boolean checkAvailability(String key) {
         boolean available = false;
         if (model.userPolygons.containsKey(key)) {
             PolygonTile tile = model.userPolygons.get(key);
@@ -178,82 +168,18 @@ public class CityMapListener extends Pane implements InvalidationListener {
         return available;
     }
 
-    private void createLRoad() {
-        int r = Integer.parseInt(key.split("-")[0]);
-        int k = Integer.parseInt(key.split("-")[1]);
-        String firstKey = selectedRoadKeys.get(0);
-        int firstR = Integer.parseInt(firstKey.split("-")[0]);
-        int firstK = Integer.parseInt(firstKey.split("-")[1]);
-        setOriginalPaint();
-        selectedRoadKeys.clear();
-        selectedRoadKeys.add(firstKey);
-        int minR = min(r, firstR);
-        int maxR = max(r, firstR);
-        int minK = min(k, firstK);
-        int maxK = max(k, firstK);
-        for (int i = minR; i <= maxR; i++) {
-            String newKey = i + "-" + firstK;
-            checkAvailability(newKey);
-            selectedRoadKeys.add(newKey);
-        }
-        for (int i = minK; i < maxK; i++) {
-            String newKey = r + "-" + i;
-            checkAvailability(newKey);
-            selectedRoadKeys.add(newKey);
-        }
-    }
-    
+    // In de hashmaps "MOUSEMOVED_METHODS" en "MOUSECLICKED_METHODS" kon ik de methodes van buildingListener nog niet
+    // aanspreken omdat buildingListener eerst nog geïnitialiseerd moest worden. Hierdoor heb ik private methodes
+    // gemaakt zodat de methodes van buildingListener alsnog gemakkelijk uitgevoerd kunnen worden.
     private void checkBuildingAvailability() {
-        for (int i = 0; i < 4; i++) {
-            availabilityBuilding[i] = false;
-        }
-        if (model.getPolygonMap().containsKey(key)) {
-            PolygonTile polygonTile = model.getPolygonMap().get(key);
-            ArrayList<PolygonTile> polygonNeighbours = polygonTile.getNeighbours(model.getPolygonMap(), true);
-            int index = 0;
-            for (PolygonTile tile : polygonNeighbours) {
-                String tileKey = tile.getKey();
-                if (polygonNeighbours.size() != 4) {
-                    tile.setFill(Color.RED);
-                } else {
-                    availabilityBuilding[index] = checkAvailability(tileKey);
-                }
-                index++;
-            }
-        }
+        buildingListener.checkBuildingAvailability(key);
     }
 
     private void addBuilding() {
-        int index = 0;
-        while (index < availabilityBuilding.length && availabilityBuilding[index]) {
-            index++;
-        }
-        if (index == availabilityBuilding.length) {
-            int r = Integer.parseInt(key.split("-")[0]);
-            int k = Integer.parseInt(key.split("-")[1]);
-            String imageName = "polis/tiles/" + model.getButtonSelected() + "-0.png";
-            BuildingTile newTile = new BuildingTile(CELL_SIZE, r, k, imageName);
-            model.getChildren().add(newTile);
-            String[] newKeys = {r + "-" + k, (r - 1) + "-" + k, r + "-" + (k + 1), (r - 1) + "-" + (k + 1)};
-            for (String newKey : newKeys) {
-                model.userPolygons.put(newKey, newTile);
-            }
-            originalPaint.put(newTile, newTile.getFill());
-        }
+        buildingListener.addBuilding(key);
     }
 
     private void changeBuildingImage() {
-        if (model.userPolygons.containsKey(key) && model.userPolygons.get(key).getBackground().equals("building")) {
-            BuildingTile tile = (BuildingTile) model.userPolygons.get(key);
-            String imageName = tile.getImageName();
-            int index = imageName.length() - 5;
-            int getal = Integer.parseInt(imageName.substring(index, index + 1));
-            getal ++;
-            if (getal == 4) {
-                getal = 0;
-            }
-            imageName = imageName.substring(0, index) + getal + imageName.substring(index + 1);
-            tile.setImage(imageName, originalPaint);
-        }
+        buildingListener.changeBuildingImage(key);
     }
 }

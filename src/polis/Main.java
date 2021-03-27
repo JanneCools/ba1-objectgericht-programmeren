@@ -15,7 +15,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("polis.fxml"));
         Scene scene = new Scene (root);
         stage.setScene(scene);
-        stage.setResizable(false);
         stage.setTitle("Polis - 2021 © Universiteit Gent");
         stage.show();
     }

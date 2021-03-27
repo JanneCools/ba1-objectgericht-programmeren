@@ -12,9 +12,9 @@ public class BuildingTile extends PolygonTile {
 
     public BuildingTile(int cellsize, int r, int k, String imageName) {
         super(cellsize, 2, r, k);
+        this.imageName = imageName;
         Image image = new Image(imageName);
         setFill(new ImagePattern(image));
-        this.imageName = imageName;
     }
 
     public String getImageName() {
