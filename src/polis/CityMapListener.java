@@ -6,7 +6,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +35,8 @@ public class CityMapListener extends Pane implements InvalidationListener {
     // Ik gebruik verschillende Maps die telkens andere methodes uitvoeren afhankelijk van de gebeurtenis van de muis
     // en van de knop die is ingedrukt.
     private final Map<String, Runnable> MOUSEMOVED_METHODS = Map.of(
-            "bulldozer", () -> setStroke(Color.RED), "selection", () -> setStroke(Color.WHITE),
+            "bulldozer", () -> setStroke(Color.rgb(255,0,0,0.75), 8.0),
+            "selection", () -> setStroke(Color.rgb(255,255,255,0.75), 4.0),
             "road", () -> checkAvailability(key), "industry", this::checkBuildingAvailability,
             "commerce", this::checkBuildingAvailability, "residence", this::checkBuildingAvailability
     );
@@ -95,7 +95,8 @@ public class CityMapListener extends Pane implements InvalidationListener {
                 removeTile();
                 if (model.getPolygonMap().containsKey(key)) {
                     PolygonTile tile = model.getPolygonMap().get(key);
-                    tile.setStroke(Color.RED);
+                    tile.setStroke(Color.rgb(255, 0, 0, 0.5));
+                    tile.setStrokeWidth(8.0);
                 }
             }
         });
@@ -127,14 +128,16 @@ public class CityMapListener extends Pane implements InvalidationListener {
     }
 
     // Methode die bulldozer en selection gebruiken om de omranding van een tegel te kleuren in wit/rood
-    private void setStroke(Color color) {
+    private void setStroke(Color color, double strokeWidth) {
         model.getPolygonMap().values().forEach(tile -> tile.setStroke(null));
         model.userPolygons.values().forEach(tile -> tile.setStroke(null));
         if (model.userPolygons.containsKey(key)) {
             PolygonTile tile = model.userPolygons.get(key);
+            tile.setStrokeWidth(strokeWidth);
             tile.setStroke(color);
         } else if (model.getPolygonMap().containsKey(key)) {
             PolygonTile tile = model.getPolygonMap().get(key);
+            tile.setStrokeWidth(strokeWidth);
             tile.setStroke(color);
         }
     }
@@ -155,13 +158,13 @@ public class CityMapListener extends Pane implements InvalidationListener {
             if (tile.getBackground().equals("building")) {
                 tile = model.getPolygonMap().get(key);
             }
-            tile.setFill(Color.RED);
+            tile.setFill(Color.rgb(255, 0, 0, 0.5));
         } else if (model.getPolygonMap().containsKey(key)) {
             PolygonTile tile = model.getPolygonMap().get(key);
             if (tile.getBackground().equals("road")) {
-                tile.setFill(Color.RED);
+                tile.setFill(Color.rgb(255, 0, 0, 0.5));
             } else {
-                tile.setFill(Color.CORNFLOWERBLUE);
+                tile.setFill(Color.rgb(0, 127, 255, 0.5));
                 available = true;
             }
         }

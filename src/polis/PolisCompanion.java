@@ -9,13 +9,11 @@ public class PolisCompanion {
 
     public StackPane stackPane;
     private CityMap cityMap;
-    private Viewport viewport;
-    private CityMapListener cityMapListener;
 
     private final Map<KeyCode, Runnable> KEYEVENTS = Map.of(
             KeyCode.R, this::residenceSelected, KeyCode.I, this::industrySelected,
             KeyCode.B, this::bulldozerSelected, KeyCode.C, this::commerceSelected,
-            KeyCode.S, this::roadSelected, KeyCode.ESCAPE, this::selectionSelected
+            KeyCode.S, this::roadSelected, KeyCode.E, this::selectionSelected
     );
 
 
@@ -23,11 +21,11 @@ public class PolisCompanion {
         stackPane.getStylesheets().add("polis/polis.css");
         // stadskaart aanmaken en in de viewport plaasten
         cityMap = new CityMap();
-        viewport = new Viewport(cityMap, 0.5);
+        Viewport viewport = new Viewport(cityMap, 0.5);
         stackPane.getChildren().add(viewport);
         viewport.toBack();
         // listener van de stadskaart aanmaken
-        cityMapListener = new CityMapListener(cityMap);
+        CityMapListener cityMapListener = new CityMapListener(cityMap);
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
         cityMapListener.setViewOrder(-100);

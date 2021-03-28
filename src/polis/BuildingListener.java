@@ -35,7 +35,7 @@ public class BuildingListener {
             for (PolygonTile tile : polygonNeighbours) {
                 String tileKey = tile.getKey();
                 if (polygonNeighbours.size() != 4) {
-                    tile.setFill(Color.RED);
+                    tile.setFill(Color.rgb(255, 0, 0, 0.5));
                 } else {
                     availabilityBuilding[index] = cityMapListener.checkAvailability(tileKey);
                 }

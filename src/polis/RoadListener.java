@@ -10,7 +10,7 @@ public class RoadListener {
 
     private final CityMap model;
     private Map<PolygonTile, Paint> originalPaint;
-    private CityMapListener cityMapListener;
+    private final CityMapListener cityMapListener;
     private static final int CELL_SIZE = 64;
 
     // Veld om alle tegels bij te houden die door de gebruiker worden aangeduid om er een weg van de maken

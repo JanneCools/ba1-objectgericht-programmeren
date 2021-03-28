@@ -24,7 +24,6 @@ public class PolygonTile extends Polygon {
         int y = cellSize * (-size + r + k) / 2;
         setTranslateX(x + 64 * 31);
         setTranslateY(y);
-        setStrokeWidth(5.0);
         setFill(Color.rgb(204, 249, 170));
         setViewOrder(-r - k - (double)size);
     }
