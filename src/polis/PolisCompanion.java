@@ -1,5 +1,6 @@
 package polis;
 
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import prog2.util.Viewport;
@@ -9,6 +10,8 @@ public class PolisCompanion {
 
     public StackPane stackPane;
     private CityMap cityMap;
+    public Button buttonSimulator;
+    private Simulator simulator;
 
     private final Map<KeyCode, Runnable> KEYEVENTS = Map.of(
             KeyCode.R, this::residenceSelected, KeyCode.I, this::industrySelected,
@@ -24,7 +27,7 @@ public class PolisCompanion {
         Viewport viewport = new Viewport(cityMap, 0.5);
         stackPane.getChildren().add(viewport);
         viewport.toBack();
-        // listener van de stadskaart aanmaken
+        // eerste listener van de stadskaart aanmaken
         CityMapListener cityMapListener = new CityMapListener(cityMap);
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
@@ -36,6 +39,8 @@ public class PolisCompanion {
                 KEYEVENTS.get(keyEvent.getCode()).run();
             }
         });
+        // Simulator aanmaken
+        simulator = new Simulator(cityMap, buttonSimulator);
     }
 
     public void roadSelected() {
@@ -60,5 +65,9 @@ public class PolisCompanion {
 
     public void commerceSelected() {
         cityMap.checkButtonAction("commerce");
+    }
+
+    public void simulatorSelected() {
+        simulator.changeImage();
     }
 }

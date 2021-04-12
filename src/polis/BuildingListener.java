@@ -52,8 +52,12 @@ public class BuildingListener {
         if (index == availabilityBuilding.length) {
             int r = Integer.parseInt(key.split("-")[0]);
             int k = Integer.parseInt(key.split("-")[1]);
-            String imageName = "polis/tiles/" + model.getButtonSelected() + "-0.png";
-            BuildingTile newTile = new BuildingTile(CELL_SIZE, r, k, imageName);
+            BuildingTile newTile = new IndustryTile(CELL_SIZE, r, k, originalPaint);
+            if (model.getButtonSelected().equals("residence")) {
+                newTile = new ResidenceTile(CELL_SIZE, r, k, originalPaint);
+            } else if (model.getButtonSelected().equals("commerce")) {
+                newTile = new CommerceTile(CELL_SIZE, r, k, originalPaint);
+            }
             model.getChildren().add(newTile);
             String[] newKeys = {r + "-" + k, (r - 1) + "-" + k, r + "-" + (k + 1), (r - 1) + "-" + (k + 1)};
             for (String newKey : newKeys) {
@@ -64,17 +68,10 @@ public class BuildingListener {
     }
 
     public void changeBuildingImage(String key) {
-        if (model.userPolygons.containsKey(key) && model.userPolygons.get(key).getBackground().equals("building")) {
+        if (model.userPolygons.containsKey(key)
+                && ! model.userPolygons.get(key).getBackground().equals("road")) {
             BuildingTile tile = (BuildingTile) model.userPolygons.get(key);
-            String imageName = tile.getImageName();
-            int index = imageName.length() - 5;
-            int getal = Integer.parseInt(imageName.substring(index, index + 1));
-            getal ++;
-            if (getal == 4) {
-                getal = 0;
-            }
-            imageName = imageName.substring(0, index) + getal + imageName.substring(index + 1);
-            tile.setImage(imageName, originalPaint);
+            tile.changeImage(1);
         }
     }
 }

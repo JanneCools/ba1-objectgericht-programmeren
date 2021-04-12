@@ -25,7 +25,12 @@ public class PolygonTile extends Polygon {
         setTranslateX(x + 64 * 31);
         setTranslateY(y);
         setFill(Color.rgb(204, 249, 170));
-        setViewOrder(-r - k - (double)size);
+        setViewOrder(-r - k - size);
+    }
+
+    //Deze methode wordt enkel gebruikt door BuildingTile (en zijn subklassen).
+    public boolean hasEnoughCapacity(MovingActor actor) {
+        return true;
     }
 
     public String getKey() {

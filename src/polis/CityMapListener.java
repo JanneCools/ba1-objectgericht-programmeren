@@ -155,7 +155,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
         boolean available = false;
         if (model.userPolygons.containsKey(key)) {
             PolygonTile tile = model.userPolygons.get(key);
-            if (tile.getBackground().equals("building")) {
+            if (! tile.getBackground().equals("road")) {
                 tile = model.getPolygonMap().get(key);
             }
             tile.setFill(Color.rgb(255, 0, 0, 0.5));

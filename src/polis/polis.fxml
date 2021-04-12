@@ -15,5 +15,6 @@
       <Button fx:id="buttonRoad" mnemonicParsing="false" onAction="#roadSelected" prefHeight="40.0" prefWidth="50.0" translateY="50.0" />
       <Button fx:id="buttonBulldozer" mnemonicParsing="false" onAction="#bulldozerSelected" prefHeight="40.0" prefWidth="50.0" translateX="75.0" translateY="50.0" />
       <Button fx:id="buttonSelection" mnemonicParsing="false" onAction="#selectionSelected" prefHeight="40.0" prefWidth="50.0" translateY="100.0" />
+      <Button fx:id="buttonSimulator" mnemonicParsing="false" onAction="#simulatorSelected" prefHeight="40.0" prefWidth="80.0" StackPane.alignment="BOTTOM_LEFT" />
    </children>
 </StackPane>

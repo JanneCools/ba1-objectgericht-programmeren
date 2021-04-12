@@ -4,6 +4,22 @@ StackPane {
     -fx-background-color: beige;
 }
 
+Immigrant {
+    -fx-fill: grey;
+}
+
+JobSeeker {
+    -fx-fill: peru;
+}
+
+Goods {
+    -fx-fill: yellow;
+}
+
+Shopper {
+    -fx-fill: lightblue;
+}
+
 Button {
     -fx-min-height: 40;
     -fx-min-width: 65;
