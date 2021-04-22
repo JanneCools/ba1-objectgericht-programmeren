@@ -18,7 +18,7 @@ public class Simulator {
 
     private final CityMap model;
     private final Button buttonSimulator;
-    private boolean simulating;    //Dit veld zegt of de simulatie bezig is of op pauze staat.
+    private boolean simulating;             //Hierdoor weet ik of de simulatie bezig is (voor methode "changeImage")
 
     private final int initialRate;
     private final int slowestRate;
@@ -50,7 +50,6 @@ public class Simulator {
         buttonSimulator = simulator;
         Image image = new Image("polis/buttons/play.png");
         buttonSimulator.setGraphic(new ImageView(image));
-        simulating = false;
         actors = new ArrayList<>();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(
@@ -63,6 +62,7 @@ public class Simulator {
         factorSlowDown = tempSlowDown;
         tempo = initialRate;
         counter = RG.nextInt(tempo);
+        simulating = false;
     }
 
     public void changeTempo(boolean slowDown) {
@@ -74,19 +74,17 @@ public class Simulator {
     }
 
     public void simulate() {
-        if (simulating) {
-            changeTempo(false);
-            counter--;
-            if (counter < 0) {
-                Immigrant immigrant = new Immigrant(model, this);
-                addActor(immigrant);
-                counter = RG.nextInt(tempo);
-            }
-            int index = 0;
-            while (index < actors.size()) {
-                actors.get(index).act();
-                index++;
-            }
+        changeTempo(false);
+        counter--;
+        if (counter < 0) {
+            Immigrant immigrant = new Immigrant(model, this);
+            addActor(immigrant);
+            counter = RG.nextInt(tempo);
+        }
+        int index = 0;
+        while (index < actors.size()) {
+            actors.get(index).act();
+            index++;
         }
     }
 

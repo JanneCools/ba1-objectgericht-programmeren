@@ -36,10 +36,18 @@ public class Worker extends StaticActor {
 
     @Override
     public void changeRole() {
-        Shopper shopper = new Shopper(homeR, homeK, model, simulator, home);
-        home.changeResident(this, shopper);
-        work.removeActor(this);
-        simulator.removeActor(this);
-        simulator.addActor(shopper);
+        // Enkel van rol veranderen als de woning van de acteur er nog staat
+        if (model.userPolygons.containsKey(home.getKey())) {
+            Shopper shopper = new Shopper(homeR, homeK, model, simulator, home);
+            home.changeResident(this, shopper);
+            work.removeActor(this);
+            simulator.removeActor(this);
+            simulator.addActor(shopper);
+        }
+    }
+
+    @Override
+    public String getActorType() {
+        return "worker";
     }
 }

@@ -18,6 +18,9 @@ public class JobSeeker extends MovingActor {
     public List<String> getNeededBuildings() {
         return NEEDED_BUILDINGS;
     }
+    public String getActorType() {
+        return "jobseeker";
+    }
 
     @Override
     public void destinationNotFound() {

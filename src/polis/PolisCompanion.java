@@ -1,7 +1,9 @@
 package polis;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import prog2.util.Viewport;
 import java.util.Map;
@@ -12,11 +14,15 @@ public class PolisCompanion {
     private CityMap cityMap;
     public Button buttonSimulator;
     private Simulator simulator;
+    public Label labelTitle;
+    public Label labelStatistics;
+    public BorderPane infoPanel;
 
     private final Map<KeyCode, Runnable> KEYEVENTS = Map.of(
             KeyCode.R, this::residenceSelected, KeyCode.I, this::industrySelected,
             KeyCode.B, this::bulldozerSelected, KeyCode.C, this::commerceSelected,
-            KeyCode.S, this::roadSelected, KeyCode.E, this::selectionSelected
+            KeyCode.S, this::roadSelected, KeyCode.E, this::selectionSelected,
+            KeyCode.SPACE, this::simulatorSelected
     );
 
 
@@ -27,8 +33,8 @@ public class PolisCompanion {
         Viewport viewport = new Viewport(cityMap, 0.5);
         stackPane.getChildren().add(viewport);
         viewport.toBack();
-        // eerste listener van de stadskaart aanmaken
-        CityMapListener cityMapListener = new CityMapListener(cityMap);
+        // listener van de stadskaart aanmaken
+        CityMapListener cityMapListener = new CityMapListener(cityMap, labelTitle, labelStatistics);
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
         cityMapListener.setViewOrder(-100);
@@ -41,6 +47,8 @@ public class PolisCompanion {
         });
         // Simulator aanmaken
         simulator = new Simulator(cityMap, buttonSimulator);
+        labelStatistics.setText("Bewoners: 0 / 0.0" + "\n" + "Jobs: 0 / 0.0" + "\n" +
+                "Goederen: 0 / 0.0" + "\n" + "Klanten: 0 / 0.0");
     }
 
     public void roadSelected() {

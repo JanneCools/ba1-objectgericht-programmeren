@@ -7,6 +7,11 @@ public class Sleeper extends StaticActor {
     }
 
     @Override
+    public String getActorType() {
+        return "sleeper";
+    }
+
+    @Override
     public void changeRole() {
         JobSeeker jobSeeker = new JobSeeker(r, k, model, simulator, home);
         home.changeResident(this, jobSeeker);

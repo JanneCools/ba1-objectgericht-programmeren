@@ -50,4 +50,6 @@ public abstract class Actor extends Circle {
     public void removeActor() {
         simulator.removeActor(this);
     }
+
+    public abstract String getActorType();
 }

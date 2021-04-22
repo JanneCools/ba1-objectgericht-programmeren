@@ -3,8 +3,6 @@ package polis;
 import javafx.scene.paint.Paint;
 import java.util.ArrayList;
 import java.util.Map;
-import static java.lang.Integer.max;
-import static java.lang.Integer.min;
 
 public class RoadListener {
 
@@ -37,14 +35,15 @@ public class RoadListener {
         int firstK = Integer.parseInt(firstKey.split("-")[1]);
         cityMapListener.setOriginalPaint();
         selectedRoadKeys.clear();
-        //Elke keer dat de muis een andere tegel aanduidt, moet de lijst van de coördinaten van de weg
-        // die gemaakt moet worden, terug leeggemaakt worden. Anders worden alle vorige coördinaten ook nog bijgehouden.
+        //Elke keer dat de muis een andere tegel aanduidt (door erover te slepen),
+        // moet de lijst van de coördinaten van de weg die gemaakt moet worden, terug leeggemaakt worden.
+        // Anders worden alle vorige coördinaten ook nog bijgehouden.
         // Enkel de coördinaten van de eerst aangeduide tegel moet behouden worden.
         selectedRoadKeys.add(firstKey);
-        int minR = min(r, firstR);
-        int maxR = max(r, firstR);
-        int minK = min(k, firstK);
-        int maxK = max(k, firstK);
+        int minR = Math.min(r, firstR);
+        int maxR = Math.max(r, firstR);
+        int minK = Math.min(k, firstK);
+        int maxK = Math.max(k, firstK);
         for (int i = minR; i <= maxR; i++) {
             String newKey = i + "-" + firstK;
             cityMapListener.checkAvailability(newKey);

@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
 <StackPane fx:id="stackPane" alignment="TOP_LEFT" maxHeight="450" maxWidth="800" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="polis.PolisCompanion">
@@ -16,5 +18,13 @@
       <Button fx:id="buttonBulldozer" mnemonicParsing="false" onAction="#bulldozerSelected" prefHeight="40.0" prefWidth="50.0" translateX="75.0" translateY="50.0" />
       <Button fx:id="buttonSelection" mnemonicParsing="false" onAction="#selectionSelected" prefHeight="40.0" prefWidth="50.0" translateY="100.0" />
       <Button fx:id="buttonSimulator" mnemonicParsing="false" onAction="#simulatorSelected" prefHeight="40.0" prefWidth="80.0" StackPane.alignment="BOTTOM_LEFT" />
+      <BorderPane fx:id="infoPanel" maxHeight="100.0" maxWidth="150.0" prefHeight="50.0" prefWidth="50.0" StackPane.alignment="BOTTOM_RIGHT">
+         <top>
+            <Label fx:id="labelTitle" text="STATISTIEKEN" BorderPane.alignment="TOP_LEFT" />
+         </top>
+         <center>
+            <Label fx:id="labelStatistics" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
    </children>
 </StackPane>

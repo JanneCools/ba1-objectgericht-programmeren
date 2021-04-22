@@ -1,23 +1,23 @@
 package polis;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class Immigrant extends MovingActor {
 
-    private static final List<String> NEEDEDBUILDING = List.of("residence");
+    private static final List<String> NEEDED_BUILDING = List.of("residence");
 
     public Immigrant(CityMap model, Simulator simulator) {
         super(-1, 15, 0, 0, model, simulator, null, "immigrant");
-        //immigrant heeft nog geen huis dus voor de coördinaten homeR en homeK geeft ik gewoon (0, 0) mee
+        // Een immigrant heeft nog geen huis dus voor de coördinaten homeR en homeK geeft ik gewoon (0, 0) mee
         // en voor home geef ik null mee
     }
 
     @Override
     public List<String> getNeededBuildings() {
-        return NEEDEDBUILDING;
+        return NEEDED_BUILDING;
+    }
+    public String getActorType() {
+        return "immigrant";
     }
 
     @Override

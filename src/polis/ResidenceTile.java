@@ -25,14 +25,20 @@ public class ResidenceTile extends BuildingTile {
     public String getAdjective() {
         return "residential";
     }
-
-    @Override
     public String getBackground() {
         return "residence";
     }
 
     @Override
-    public boolean hasEnoughCapacity(MovingActor actor) {
+    public int getNumberOfResidents() {
+        return residents.size();
+    }
+    public double getResidenceCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public boolean hasEnoughCapacity(String actor) {
         return residents.size() + 1 <= capacity;
     }
 

@@ -1,9 +1,6 @@
 package polis;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class Shopper extends MovingActor {
 
@@ -17,10 +14,14 @@ public class Shopper extends MovingActor {
     public List<String> getNeededBuildings() {
         return NEEDED_BUILDING;
     }
+    public String getActorType() {
+        return "shopper";
+    }
 
     @Override
     public void destinationNotFound() {
         changeHomeCapacity(home, "factor.shop.not.found");
+        // Enkel van rol veranderen als de woning van de acteur nog bestaat
         if (model.userPolygons.containsKey(home.getKey())) {
             Sleeper sleeper = new Sleeper(homeR, homeK, model, simulator, home);
             simulator.addActor(sleeper);

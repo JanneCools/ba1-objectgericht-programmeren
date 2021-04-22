@@ -3,7 +3,6 @@ package polis;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -48,10 +47,11 @@ public abstract class BuildingTile extends PolygonTile {
 
     // Deze abstracte methode gebruik ik om in de constructor de juiste "properties" te krijgen.
     protected abstract String getAdjective();
+
     public abstract String getBackground();
 
     // Enkel CommerceTile maakt gebruik van de parameter "actor".
-    public abstract boolean hasEnoughCapacity(MovingActor actor);
+    public abstract boolean hasEnoughCapacity(String actor);
     public abstract void addActor(Actor actor);
     public abstract void removeActor(Actor actor);
 
@@ -83,4 +83,5 @@ public abstract class BuildingTile extends PolygonTile {
 
     // Enkel IndustryTile gebruikt deze methode
     public void sellGoods() {}
+
 }

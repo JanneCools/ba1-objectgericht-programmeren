@@ -9,6 +9,7 @@ public abstract class StaticActor extends Actor {
     }
 
     public abstract void changeRole();
+    public abstract String getActorType();
 
     public void act() {
         age --;

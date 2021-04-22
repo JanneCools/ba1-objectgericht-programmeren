@@ -2,6 +2,7 @@ package polis;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,7 +22,10 @@ public class CityMapListener extends Pane implements InvalidationListener {
     private final RoadListener roadListener;
     private final BuildingListener buildingListener;
 
-    // Veld om bij te houden waar de muis zich momenteel bevind (in het formaat "r-k" zoals bij de lijsten in het model)
+    // Deze klasse past het infopaneel aan.
+    private final StatisticsEditor statisticsEditor;
+
+    // Veld om bij te houden waar de muis zich momenteel bevind (in het formaat "r-k" zoals bij de maps in het model)
     private String key;
 
     /*
@@ -46,10 +50,10 @@ public class CityMapListener extends Pane implements InvalidationListener {
     private final Map<String, Runnable> MOUSECLICKED_METHODS = Map.of(
             "bulldozer", this::removeTile, "residence", this::addBuilding,
             "industry", this::addBuilding, "commerce", this::addBuilding,
-            "selection", this::changeBuildingImage, "road", () -> {}
+            "selection", this::showStatistics, "road", () -> {}
     );
 
-    public CityMapListener(CityMap model) {
+    public CityMapListener(CityMap model, Label labelTitle, Label labelStatistics) {
         setId("cityMapListener");
         this.model = model;
         model.addListener(this);
@@ -62,6 +66,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
         key = "";
         roadListener = new RoadListener(model, this, originalPaint);
         buildingListener = new BuildingListener(model, this, originalPaint);
+        statisticsEditor = new StatisticsEditor(labelTitle, labelStatistics, model.userPolygons);
     }
 
     @Override
@@ -109,7 +114,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
         setOnMouseExited(ev -> setOriginalPaint());
     }
 
-    // De (rij- en kolom-)coördinaten berekenen o.b.v de coördinaten van de muis.
+    // Hier bereken ik de (rij- en kolom-)coördinaten o.b.v de coördinaten van de muis.
     // Deze rij- en kolom coördinaten vormen de sleutel van de map "polygonMap" en de map "userPolygons"
     // in de klasse CityMap.
     private String getKey(MouseEvent mouseEvent) {
@@ -182,7 +187,11 @@ public class CityMapListener extends Pane implements InvalidationListener {
         buildingListener.addBuilding(key);
     }
 
-    private void changeBuildingImage() {
-        buildingListener.changeBuildingImage(key);
+    private void showStatistics() {
+        if (model.userPolygons.containsKey(key)) {
+            statisticsEditor.showStats(model.userPolygons.get(key));
+        } else if (model.getPolygonMap().containsKey(key)) {
+            statisticsEditor.showStats(model.getPolygonMap().get(key));
+        }
     }
 }

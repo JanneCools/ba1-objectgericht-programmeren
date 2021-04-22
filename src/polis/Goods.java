@@ -1,9 +1,6 @@
 package polis;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class Goods extends MovingActor {
 
@@ -19,6 +16,9 @@ public class Goods extends MovingActor {
     @Override
     public List<String> getNeededBuildings() {
         return NEEDED_BUILDING;
+    }
+    public String getActorType() {
+        return "goods";
     }
 
     @Override

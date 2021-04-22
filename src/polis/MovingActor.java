@@ -8,16 +8,19 @@ public abstract class MovingActor extends Actor {
 
     public static final Random RG = new Random();
 
-    // Het veld "direction" houdt bij in welke richting de acteur momenteel kijkt. Dit getal kan oneindig groot worden,
-    // dus bereken ik telkens het getal modulo 4. Dit geeft een getal terug van 0 tot en met 3.
-    // 0 betekent dat de acteur naar rechtboven kijkt, 1 betekent rechtsonder, 2 linksonder en 3 linksboven.
+    // Het veld "direction" houdt bij in welke richting de acteur momenteel kijkt. Dit geeft een getal terug van 0 tot en met 3.
+    // 0 betekent dat de acteur naar rechtsboven kijkt, 1 betekent rechtsonder, 2 linksonder en 3 linksboven.
     private int direction;
+
+    // Deze array wordt gebruikt in de methode "changeDirection". O.b.v. de parameter "value" wordt het veld
+    // "direction" met een bepaald getal verhogd of verlaagd.
+    private static final int[] CHANGE_DIRECTION = {-1, 1, 0, 2};
 
     /*
      De sleutels van de volgende mappen horen bij het veld "direction". Afhankelijk van naar waar de acteur
      kijkt, zal een andere array verkregen worden.
      Bij zo'n array zal bij index 0 staan hoeveel je bij de r-coördinaat moet optellen
-     om de tegel links ervan te bekomen, bij index 1 om de tegel rechts te bekomen, bij index 2 de
+     om de tegel links van de acteur te bekomen, bij index 1 om de tegel rechts te bekomen, bij index 2 de
      tegel voor de acteur en index 3 achter de acteur (analoog voor de array directionsK).
     */
     private static final Map<Integer, int[]> directionsR = Map.of(
@@ -41,6 +44,7 @@ public abstract class MovingActor extends Actor {
 
     public abstract void enterBuilding(String key);
     public abstract void destinationNotFound();
+    public abstract String getActorType();
 
     public void act() {
         if (age != 0 && arrivedAtDestination() == null) {
@@ -77,11 +81,11 @@ public abstract class MovingActor extends Actor {
         // heeft de acteur zijn bestemming bereikt.
         if (model.userPolygons.containsKey(keyLeft)
                 && getNeededBuildings().contains(model.userPolygons.get(keyLeft).getBackground())
-                && model.userPolygons.get(keyLeft).hasEnoughCapacity(this)) {
+                && model.userPolygons.get(keyLeft).hasEnoughCapacity(getActorType())) {
             arrived = keyLeft;
         } else if (model.userPolygons.containsKey(keyRight)
                 && getNeededBuildings().contains(model.userPolygons.get(keyRight).getBackground())
-                && model.userPolygons.get(keyRight).hasEnoughCapacity(this)) {
+                && model.userPolygons.get(keyRight).hasEnoughCapacity(getActorType())) {
             arrived = keyRight;
         }
         return arrived;
@@ -120,13 +124,7 @@ public abstract class MovingActor extends Actor {
 
     private void changeDirection(int value) {
         // Afhankelijk van of de acteur al dan niet is afgeslagen, moet het veld "direction" veranderen.
-        if (value == 0) {
-            direction--;
-        } else if (value == 1) {
-            direction++;
-        } else if (value == 3) {
-            direction += 2;
-        }
+        direction += CHANGE_DIRECTION[value];
         direction = direction % 4;
         // Als "direction" eerst als waarde nul had, heeft die nu als waarde -1. Aangezien -1 % 4 gelijk is aan -1,
         // moet ik het getal nog met 4 optellen.

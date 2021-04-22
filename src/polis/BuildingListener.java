@@ -49,7 +49,7 @@ public class BuildingListener {
         while (index < availabilityBuilding.length && availabilityBuilding[index]) {
             index++;
         }
-        if (index == availabilityBuilding.length) {
+        if (index == availabilityBuilding.length) {         //gebouw mag geplaatst worden
             int r = Integer.parseInt(key.split("-")[0]);
             int k = Integer.parseInt(key.split("-")[1]);
             BuildingTile newTile = new IndustryTile(CELL_SIZE, r, k, originalPaint);
@@ -64,14 +64,6 @@ public class BuildingListener {
                 model.userPolygons.put(newKey, newTile);
             }
             originalPaint.put(newTile, newTile.getFill());
-        }
-    }
-
-    public void changeBuildingImage(String key) {
-        if (model.userPolygons.containsKey(key)
-                && ! model.userPolygons.get(key).getBackground().equals("road")) {
-            BuildingTile tile = (BuildingTile) model.userPolygons.get(key);
-            tile.changeImage(1);
         }
     }
 }

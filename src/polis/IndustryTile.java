@@ -3,7 +3,6 @@ package polis;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -23,13 +22,20 @@ public class IndustryTile extends BuildingTile {
     public String getBackground() {
         return "industry";
     }
-
     public String getAdjective() {
         return "industrial";
     }
 
     @Override
-    public boolean hasEnoughCapacity(MovingActor actor) {
+    public int getNumberOfJobs() {
+        return workers.size();
+    }
+    public double getJobCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public boolean hasEnoughCapacity(String actor) {
         return workers.size() + 1 <= capacity;
     }
 

@@ -16,9 +16,15 @@ public class Customer extends StaticActor {
     }
 
     @Override
+    public String getActorType() {
+        return "customer";
+    }
+
+    @Override
     public void changeRole() {
         shop.sellGoods();
         shop.removeActor(this);
+        //Enkel van rol veranderen als de woning van de acteur nog bestaat.
         if (model.userPolygons.containsKey(home.getKey())) {
             Sleeper sleeper = new Sleeper(homeR, homeK, model, simulator, home);
             home.changeResident(this, sleeper);

@@ -4,6 +4,11 @@ StackPane {
     -fx-background-color: beige;
 }
 
+BorderPane {
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
+
 Immigrant {
     -fx-fill: grey;
 }

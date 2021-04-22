@@ -29,7 +29,7 @@ public class PolygonTile extends Polygon {
     }
 
     //Deze methode wordt enkel gebruikt door BuildingTile (en zijn subklassen).
-    public boolean hasEnoughCapacity(MovingActor actor) {
+    public boolean hasEnoughCapacity(String actor) {
         return true;
     }
 
@@ -41,7 +41,7 @@ public class PolygonTile extends Polygon {
         return "green";
     }
     // Geeft weer wat de achtergrond van een tegel is.
-    // Elke onderklasse geeft een andere achtergrond terug.
+    // Elke subklasse geeft een andere achtergrond terug.
 
     public void remove(CityMap model, Map<PolygonTile, Paint> originalPaint) {
         model.userPolygons.remove(r+"-"+k);
@@ -63,7 +63,7 @@ public class PolygonTile extends Polygon {
     /*
         In de volgende methode worden de 3 buren van de tegel gevraagd.
         Als van de parameter 'square' true geeft, dan worden de rechter-, rechterschuinboven- en
-        rechterschuinonderbuur gevraagd (waardoor de 4 tegels een vierkant vormen).
+        rechterschuinonderbuur gevraagd (waardoor de 4 tegels een ruit vormen).
         Anders worden alle schuine buren gevraagd (waardoor de 4 tegels een kruis vormen).
      */
     public ArrayList<PolygonTile> getNeighbours(Map<String, PolygonTile> map, boolean square) {
@@ -79,5 +79,30 @@ public class PolygonTile extends Polygon {
         }
         neighbours.removeIf(Objects::isNull);
         return neighbours;
+    }
+
+    // Deze methodes worden gebruikt door de klasse StatisticsPanel voor het infopaneel
+    // en worden overschreven door de subklassen (soms door meerdere subklassen, soms door 1).
+    // Hierdoor moet ik in de methodes van de klasse StatisticsPanel niet nakijken of een gebouw van het juiste
+    // type is ("commerce", "industry" of "residence").
+    public double getResidenceCapacity() {
+        return 0.0;
+    }
+    public double getJobCapacity() {
+        return 0.0;
+    }
+    public double getGoodsCapacity() { return 0.0;}
+    public double getCustomerCapacity() { return 0.0;}
+    public int getNumberOfResidents() {
+        return 0;
+    }
+    public int getNumberOfJobs() {
+        return 0;
+    }
+    public int getNumberOfGoods() {
+        return 0;
+    }
+    public int getNumberOfCustomers() {
+        return 0;
     }
 }
