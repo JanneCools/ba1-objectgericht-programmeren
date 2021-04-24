@@ -1,7 +1,17 @@
 StackPane {
     -fx-pref-width: 800;
     -fx-pref-height: 450;
-    -fx-background-color: beige;
+    -fx-background-color: #afffff;
+}
+
+#background {
+    -fx-pref-height: 3000;
+    -fx-pref-width: 5000;
+    -fx-background-image: url("background.png");
+    -fx-background-size: 5000;
+    -fx-background-repeat: no-repeat;
+    -fx-translate-x: -500;
+    -fx-translate-y: -500;
 }
 
 BorderPane {

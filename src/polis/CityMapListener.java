@@ -31,7 +31,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
     /*
         Per tegel hou ik zijn originele achtergrond bij zodat, wanneer de cursor
         de tegel verlaat, de tegel weer zijn originele achtergrond krijgt (met de methode 'setOriginalPaint')
-        (want wanneer de cursor op de tegel staat, krijgt deze een andere achtergrondskleur of omranding).
+        (want wanneer de cursor op de tegel staat, krijgt deze soms een andere achtergrondskleur of omranding).
         Deze achtergrond kan ik dan ook makkelijk gaandeweg aanpassen.
      */
     private final Map<PolygonTile, Paint> originalPaint;
@@ -83,8 +83,8 @@ public class CityMapListener extends Pane implements InvalidationListener {
             key = getKey(mouseEvent);
             MOUSECLICKED_METHODS.get(button).run();
         });
-        //Bij mousePressed en -released moet er enkel iets gedaan worden als de knop van de weg is ingedrukt.
-        // Bij mouseDragged wordt er iets gedaan als de knop van de weg of van de bulldozer wordt ingedrukt
+        // Bij mousePressed en -released moet er enkel iets gedaan worden als de knop van de weg is ingedrukt.
+        // Bij mouseDragged wordt er iets gedaan als de knop van de weg of van de bulldozer wordt ingedrukt.
         setOnMousePressed(mouseEvent -> {
             key = getKey(mouseEvent);
             if (button.equals("road")) {

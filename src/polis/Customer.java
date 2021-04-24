@@ -1,9 +1,5 @@
 package polis;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class Customer extends StaticActor {
 
     private final BuildingTile shop;

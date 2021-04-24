@@ -71,16 +71,18 @@ public class ResidenceTile extends BuildingTile {
         if (capacity < residents.size()) {
             int index = ((int) capacity) + 1;
             while (index <= residents.size()) {
-                Actor actor = residents.get(index);
-                actor.removeActor();
-                residents.remove(index);
+                if (residents.containsKey(index)) {
+                    Actor actor = residents.get(index);
+                    actor.removeActor();
+                    residents.remove(index);
+                }
             }
             residentNumber = (int) capacity;
         }
         if (level > 1 && capacity <= capacityForLowerLevel.get(level)) {
             changeImage(-1);
         }
-        if (level < 3 && capacity >= capacityForHigherLevel.get(level)) {
+        if (level != 0 && level < 3 && capacity >= capacityForHigherLevel.get(level)) {
             changeImage(1);
         }
     }

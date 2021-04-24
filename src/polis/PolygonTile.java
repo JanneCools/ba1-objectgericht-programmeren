@@ -62,16 +62,16 @@ public class PolygonTile extends Polygon {
 
     /*
         In de volgende methode worden de 3 buren van de tegel gevraagd.
-        Als van de parameter 'square' true geeft, dan worden de rechter-, rechterschuinboven- en
-        rechterschuinonderbuur gevraagd (waardoor de 4 tegels een ruit vormen).
+        Als voor de parameter 'polygon' true meegegeven wordt, dan worden de rechter-,
+        rechterschuinboven- en rechterschuinonderbuur gevraagd (waardoor de 4 tegels een ruit/polygon vormen).
         Anders worden alle schuine buren gevraagd (waardoor de 4 tegels een kruis vormen).
      */
-    public ArrayList<PolygonTile> getNeighbours(Map<String, PolygonTile> map, boolean square) {
+    public ArrayList<PolygonTile> getNeighbours(Map<String, PolygonTile> map, boolean polygon) {
         ArrayList<PolygonTile> neighbours = new ArrayList<>();
         neighbours.add(this);
         neighbours.add(map.get(r + "-" + (k+1)));
         neighbours.add(map.get((r-1) + "-" + k));
-        if (square) {
+        if (polygon) {
             neighbours.add(map.get((r-1) + "-" + (k+1)));
         } else {
             neighbours.add(map.get((r) + "-" + (k-1)));

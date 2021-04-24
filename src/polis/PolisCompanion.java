@@ -2,9 +2,9 @@ package polis;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import prog2.util.Viewport;
 import java.util.Map;
 
@@ -33,11 +33,19 @@ public class PolisCompanion {
         Viewport viewport = new Viewport(cityMap, 0.5);
         stackPane.getChildren().add(viewport);
         viewport.toBack();
+
         // listener van de stadskaart aanmaken
         CityMapListener cityMapListener = new CityMapListener(cityMap, labelTitle, labelStatistics);
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
         cityMapListener.setViewOrder(-100);
+
+        // Paneel maken voor de omgeving rond de stad
+        Pane background = new Pane();
+        cityMap.getChildren().add(background);
+        background.toBack();
+        background.setId("background");
+
         viewport.setFocusTraversable(true);
         viewport.requestFocus();
         stackPane.setOnKeyPressed(keyEvent -> {

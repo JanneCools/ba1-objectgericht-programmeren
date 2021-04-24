@@ -8,7 +8,7 @@ public class StatisticsEditor {
 
     private final Label labelTitle;
     private final Label labelStatistics;
-    private Map<String, PolygonTile> userpolygons;
+    private final Map<String, PolygonTile> userpolygons;
 
     // Alle benodige statistieken
     private double residentCapacity;

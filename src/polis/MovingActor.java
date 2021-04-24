@@ -12,8 +12,8 @@ public abstract class MovingActor extends Actor {
     // 0 betekent dat de acteur naar rechtsboven kijkt, 1 betekent rechtsonder, 2 linksonder en 3 linksboven.
     private int direction;
 
-    // Deze array wordt gebruikt in de methode "changeDirection". O.b.v. de parameter "value" wordt het veld
-    // "direction" met een bepaald getal verhogd of verlaagd.
+    // Deze array wordt gebruikt in de methode "changeDirection". Op basis van de parameter "value"
+    // wordt het veld "direction" met een bepaald getal verhogd of verlaagd.
     private static final int[] CHANGE_DIRECTION = {-1, 1, 0, 2};
 
     /*
@@ -126,7 +126,7 @@ public abstract class MovingActor extends Actor {
         // Afhankelijk van of de acteur al dan niet is afgeslagen, moet het veld "direction" veranderen.
         direction += CHANGE_DIRECTION[value];
         direction = direction % 4;
-        // Als "direction" eerst als waarde nul had, heeft die nu als waarde -1. Aangezien -1 % 4 gelijk is aan -1,
+        // "direction" kan na aanpassing de waarde -1 krijgen. Aangezien -1 % 4 gelijk is aan -1,
         // moet ik het getal nog met 4 optellen.
         if (direction < 0) {
             direction += 4;

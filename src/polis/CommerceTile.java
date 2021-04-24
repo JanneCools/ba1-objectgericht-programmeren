@@ -119,7 +119,6 @@ public class CommerceTile extends BuildingTile {
         return enough;
     }
 
-
     private void checkGoodsCapacity() {
         checkCapacity = goods.size() + 1 <= goodsCapacity;
     }
@@ -160,8 +159,6 @@ public class CommerceTile extends BuildingTile {
         goods.remove(actor);
         traders.remove(actor);
         customers.remove(actor);
-        // Aangezien de acteur maar in 1 van deze lijsten zal zitten en er geen error ontstaat als je
-        // een onbestaand object wilt verwijderen, verwijder ik de acteur gewoon uit alle lijsten.
     }
 
     @Override
@@ -169,5 +166,11 @@ public class CommerceTile extends BuildingTile {
         super.changeCapacity(factor);
         jobCapacity = capacity / customersPerTrader;
         goodsCapacity = capacity * goodsPerCustomer;
+        if (level > 1 && capacity <= capacityForLowerLevel.get(level)) {
+            changeImage(-1);
+        }
+        if (level != 0 && level < 3 && capacity >= capacityForHigherLevel.get(level)) {
+            changeImage(1);
+        }
     }
 }

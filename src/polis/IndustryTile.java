@@ -54,18 +54,10 @@ public class IndustryTile extends BuildingTile {
     @Override
     public void changeCapacity(double factor) {
         super.changeCapacity(factor);
-        if (capacity < workers.size()) {
-            int index = ((int) capacity) + 1;
-            while (index < workers.size()) {
-                Actor actor = workers.get(index);
-                actor.removeActor();
-                workers.remove(index);
-            }
-        }
         if (level > 1 && capacity <= capacityForLowerLevel.get(level)) {
             changeImage(-1);
         }
-        if (level < 3 && capacity >= capacityForHigherLevel.get(level)) {
+        if (level != 0 && level < 3 && capacity >= capacityForHigherLevel.get(level)) {
             changeImage(1);
         }
     }

@@ -48,7 +48,7 @@ public class RoadTile extends PolygonTile {
                 index += (int) Math.pow(2, i/2.0);
                 if (firstTime) {
                     tile.changeBackground(model, originalPaint, false);
-                    //De parameter firstTime zorgt ervoor dat er geen oneindige loop ontstaat.
+                    //De parameter "firstTime" zorgt ervoor dat er geen oneindige loop ontstaat.
                 }
             }
         }

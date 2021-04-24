@@ -7,7 +7,7 @@ import java.util.Map;
 public class RoadListener {
 
     private final CityMap model;
-    private Map<PolygonTile, Paint> originalPaint;
+    private final Map<PolygonTile, Paint> originalPaint;
     private final CityMapListener cityMapListener;
     private static final int CELL_SIZE = 64;
 

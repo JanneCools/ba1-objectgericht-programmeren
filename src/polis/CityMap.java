@@ -11,23 +11,19 @@ import java.util.Map;
 public class CityMap extends Pane implements Observable {
 
     private static final int CELL_SIZE = 64;
+
+    //deze map bevat de originele tegels van de kaart, met de onverwijderbare weg
     private final Map<String, PolygonTile> polygonMap;
-        //deze map bevat de originele tegels van de kaart, met de onverwijderbare weg
+
+    //deze map is public zodat "CityMapListener" deze ook kan bewerken en houdt alle door de gebuiker
+    // gemaakte tegels (weg of gebouw) bij
     public Map<String, PolygonTile> userPolygons;
-        //deze map is public zodat de listener deze ook kan bewerken en houdt alle door de gebuiker
-        // gemaakte tegels (weg of gebouw) bij
+
     private ArrayList<InvalidationListener> listeners;
     private String buttonSelected;      // houdt bij welke knop geselecteerd is (of geen enkele)
 
-    /*
-        Ik hou een lijst bij voor de onverwijderbare weg die er bij het opstarten van
-        het programma al lig.
-        Daarnaast gebruik ik een hashmap om alle polygons samen met hun rij- en
-        kolomcoördinaten bij te houden.
-     */
 
     public CityMap() {
-        setId("cityMap");
         listeners = new ArrayList<>();
         polygonMap = new HashMap<>();
         userPolygons = new HashMap<>();
@@ -63,21 +59,20 @@ public class CityMap extends Pane implements Observable {
     public String getButtonSelected() {
         return buttonSelected;
     }
-
     public Map<String, PolygonTile> getPolygonMap() {
         return polygonMap;
-    }
-
-    private void fireInvalidationEvent() {
-        for (InvalidationListener listener: listeners) {
-            listener.invalidated(this);
-        }
     }
 
     public void checkButtonAction(String button) {
         if (! buttonSelected.equals(button)) {
             buttonSelected = button;
             fireInvalidationEvent();
+        }
+    }
+
+    private void fireInvalidationEvent() {
+        for (InvalidationListener listener: listeners) {
+            listener.invalidated(this);
         }
     }
 }
