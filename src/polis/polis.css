@@ -4,6 +4,10 @@ StackPane {
     -fx-background-color: #afffff;
 }
 
+#cityMapListener {
+    -fx-background-color: transparent;
+}
+
 #background {
     -fx-pref-height: 3000;
     -fx-pref-width: 5000;
@@ -42,10 +46,6 @@ Button {
     -fx-background-repeat: no-repeat;
     -fx-background-position: 50%;
     -fx-focus-traversable: false;
-}
-
-#cityMapListener {
-    -fx-background-color: transparent;
 }
 
 #buttonResidence {

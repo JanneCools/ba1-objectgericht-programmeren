@@ -55,7 +55,7 @@ public abstract class BuildingTile extends PolygonTile {
     public abstract void addActor(Actor actor);
     public abstract void removeActor(Actor actor);
 
-    //Deze methode wordt enkel gebruikt door ResidenceTile (uitleg staat in die klasse).
+    // Deze methode wordt enkel gebruikt door ResidenceTile (uitleg staat in die klasse).
     public void changeResident(Actor oldActor, Actor newActor) {}
 
     // De parameter "difference" geeft aan of het niveau van het gebouw moet stijgen of dalen met 1 eenheid.
@@ -83,5 +83,4 @@ public abstract class BuildingTile extends PolygonTile {
 
     // Enkel IndustryTile gebruikt deze methode
     public void sellGoods() {}
-
 }

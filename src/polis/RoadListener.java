@@ -12,7 +12,7 @@ public class RoadListener {
     private static final int CELL_SIZE = 64;
 
     // Veld om alle tegels bij te houden die door de gebruiker worden aangeduid om er een weg van de maken
-    // In de lijst worden de coördinaten bijgehouden in de vorm "r-k"
+    // In de lijst worden de coördinaten bijgehouden in de vorm "r-k".
     private final ArrayList<String> selectedRoadKeys;
 
     public RoadListener(CityMap model, CityMapListener cityMapListener, Map<PolygonTile, Paint> originalPaint) {
@@ -35,7 +35,7 @@ public class RoadListener {
         int firstK = Integer.parseInt(firstKey.split("-")[1]);
         cityMapListener.setOriginalPaint();
         selectedRoadKeys.clear();
-        //Elke keer dat de muis een andere tegel aanduidt (door erover te slepen),
+        // Elke keer dat de muis een andere tegel aanduidt (door erover te slepen),
         // moet de lijst van de coördinaten van de weg die gemaakt moet worden, terug leeggemaakt worden.
         // Anders worden alle vorige coördinaten ook nog bijgehouden.
         // Enkel de coördinaten van de eerst aangeduide tegel moet behouden worden.

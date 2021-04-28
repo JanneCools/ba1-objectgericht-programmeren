@@ -11,9 +11,9 @@ import java.util.Properties;
 
 public class CommerceTile extends BuildingTile {
 
-    private ArrayList<Actor> traders;
-    private ArrayList<Actor> goods;
-    private ArrayList<Actor> customers;
+    private final ArrayList<Actor> traders;
+    private final ArrayList<Actor> goods;
+    private final ArrayList<Actor> customers;
     private double jobCapacity;
     private double goodsCapacity;
     private final double badTrade;
@@ -138,7 +138,7 @@ public class CommerceTile extends BuildingTile {
         } else if (level < 3 && capacity >= capacityForHigherLevel.get(level)) {
             changeImage(1);
         }
-        if (customers.size() + 1 > capacity) {
+        if (customers.size() == (int) capacity) {
             changeCapacity(goodTrade);
         }
     }

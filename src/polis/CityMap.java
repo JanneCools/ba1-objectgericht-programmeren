@@ -12,14 +12,14 @@ public class CityMap extends Pane implements Observable {
 
     private static final int CELL_SIZE = 64;
 
-    //deze map bevat de originele tegels van de kaart, met de onverwijderbare weg
+    // Deze map bevat de originele tegels van de kaart, met de onverwijderbare weg
     private final Map<String, PolygonTile> polygonMap;
 
-    //deze map is public zodat "CityMapListener" deze ook kan bewerken en houdt alle door de gebuiker
+    // Deze map is public zodat "CityMapListener" deze ook kan bewerken en houdt alle door de gebuiker
     // gemaakte tegels (weg of gebouw) bij
     public Map<String, PolygonTile> userPolygons;
 
-    private ArrayList<InvalidationListener> listeners;
+    private final ArrayList<InvalidationListener> listeners;
     private String buttonSelected;      // houdt bij welke knop geselecteerd is (of geen enkele)
 
 
@@ -55,7 +55,6 @@ public class CityMap extends Pane implements Observable {
         listeners.remove(listener);
     }
 
-    // enkele getter-methodes zodat de listener de verschillende lijsten / maps kan gebruiken
     public String getButtonSelected() {
         return buttonSelected;
     }

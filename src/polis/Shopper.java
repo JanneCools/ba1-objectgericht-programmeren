@@ -27,7 +27,7 @@ public class Shopper extends MovingActor {
             simulator.addActor(sleeper);
             home.changeResident(this, sleeper);
         }
-        removeActor();
+        simulator.removeActor(this);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class Shopper extends MovingActor {
         Customer customer = new Customer(r, k, homeR, homeK, model, simulator, home, shop);
         home.changeResident(this, customer);
         simulator.addActor(customer);
-        removeActor();
+        simulator.removeActor(this);
     }
 }

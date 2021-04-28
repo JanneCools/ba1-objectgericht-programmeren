@@ -3,7 +3,6 @@ package polis;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-
 import java.util.Map;
 
 public class RoadTile extends PolygonTile {
@@ -30,6 +29,7 @@ public class RoadTile extends PolygonTile {
         return "road";
     }
 
+    // Bij het toevoegen of verwijderen van de weg (1 tegel), moeten de naburige wegen hun achtergrond aanpassen
     public void changeBackground(CityMap model, Map<PolygonTile, Paint> originalPaint, boolean firstTime) {
         int index = 0;
         for (int i = 0; i < 8; i += 2) {

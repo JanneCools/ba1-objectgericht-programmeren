@@ -15,7 +15,7 @@ public class Sleeper extends StaticActor {
     public void changeRole() {
         JobSeeker jobSeeker = new JobSeeker(r, k, model, simulator, home);
         home.changeResident(this, jobSeeker);
-        removeActor();
+        simulator.removeActor(this);
         simulator.addActor(jobSeeker);
     }
 }

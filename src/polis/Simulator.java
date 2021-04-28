@@ -19,6 +19,7 @@ public class Simulator {
     private final CityMap model;
     private final Button buttonSimulator;
     private boolean simulating;             //Hierdoor weet ik of de simulatie bezig is (voor methode "changeImage")
+    private final StatisticsEditor statisticsEditor;
 
     private final int initialRate;
     private final int slowestRate;
@@ -28,10 +29,10 @@ public class Simulator {
     private int counter;
 
     private static final Timeline timeline = new Timeline();
-    private ArrayList<Actor> actors;
+    private final ArrayList<Actor> actors;
 
 
-    public Simulator(CityMap model, Button simulator) {
+    public Simulator(CityMap model, Button simulator, StatisticsEditor statisticsEditor) {
         int tempInRate = 1;
         int tempSlowestRate = 1;
         double tempRecovery = 1.0;
@@ -47,6 +48,7 @@ public class Simulator {
             //Doe niets
         }
         this.model = model;
+        this.statisticsEditor = statisticsEditor;
         buttonSimulator = simulator;
         Image image = new Image("polis/buttons/play.png");
         buttonSimulator.setGraphic(new ImageView(image));
@@ -85,6 +87,11 @@ public class Simulator {
         while (index < actors.size()) {
             actors.get(index).act();
             index++;
+        }
+        // Om de 5 tellen laat ik het infopaneel (klasse StatisticsEditor) de gegevens
+        // over de aangeduide/alle tegel(s) nog eens berekenen en aanpassen.
+        if (counter % 5 == 0 && statisticsEditor.isPressed()) {
+            statisticsEditor.showStats(null);
         }
     }
 

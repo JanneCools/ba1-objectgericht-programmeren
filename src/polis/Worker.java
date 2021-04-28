@@ -46,8 +46,8 @@ public class Worker extends StaticActor {
             Shopper shopper = new Shopper(homeR, homeK, model, simulator, home);
             home.changeResident(this, shopper);
             work.removeActor(this);
-            simulator.removeActor(this);
             simulator.addActor(shopper);
         }
+        simulator.removeActor(this);
     }
 }

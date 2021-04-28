@@ -1,9 +1,6 @@
 package polis;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class JobSeeker extends MovingActor {
 
@@ -25,13 +22,13 @@ public class JobSeeker extends MovingActor {
     @Override
     public void destinationNotFound() {
         changeHomeCapacity(home, "factor.job.not.found");
-        // Nakijken of het gebouw nog bestaat
+        // Enkel van rol veranderen als de woning van de acteur nog bestaat
         if (model.userPolygons.containsKey(home.getKey())) {
             Sleeper sleeper = new Sleeper(homeR, homeK, model, simulator, home);
             simulator.addActor(sleeper);
             home.changeResident(this, sleeper);
         }
-        removeActor();
+        simulator.removeActor(this);
     }
 
     @Override
@@ -47,6 +44,6 @@ public class JobSeeker extends MovingActor {
             home.changeResident(this, worker);
         }
         changeHomeCapacity(home, "factor.job.found");
-        removeActor();
+        simulator.removeActor(this);
     }
 }

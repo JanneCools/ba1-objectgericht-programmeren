@@ -8,12 +8,12 @@ import java.util.Map;
 public class BuildingListener {
 
     private final CityMap model;
-    private Map<PolygonTile, Paint> originalPaint;
+    private final Map<PolygonTile, Paint> originalPaint;
     private final CityMapListener cityMapListener;
     private static final int CELL_SIZE = 64;
 
     // Veld om na te kijken of een gebouw geplaatst mag worden, ik maak er een veld van zodat die
-    // makkelijk door meerdere methodes gebruikt kunnen worden. Het is een array
+    // makkelijk door meerdere methodes gebruikt kan worden. Het is een array
     // omdat er 4 tegels beschikbaar moeten zijn om een gebouw te mogen plaatsen.
     private final boolean[] availabilityBuilding;
 

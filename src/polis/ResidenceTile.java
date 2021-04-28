@@ -11,7 +11,7 @@ public class ResidenceTile extends BuildingTile {
 
     private int residentNumber = 0;
 
-    private Map<Integer, Actor> residents;
+    private final Map<Integer, Actor> residents;
 
     public ResidenceTile(int cellsize, int r, int k, Map<PolygonTile, Paint> originalPaint) {
         super(cellsize, r, k, originalPaint);

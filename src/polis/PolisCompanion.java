@@ -2,7 +2,6 @@ package polis;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import prog2.util.Viewport;
@@ -34,8 +33,11 @@ public class PolisCompanion {
         stackPane.getChildren().add(viewport);
         viewport.toBack();
 
+        //Infopaneel aanmaken
+        StatisticsEditor statisticsEditor = new StatisticsEditor(labelTitle, labelStatistics, cityMap.userPolygons);
+
         // listener van de stadskaart aanmaken
-        CityMapListener cityMapListener = new CityMapListener(cityMap, labelTitle, labelStatistics);
+        CityMapListener cityMapListener = new CityMapListener(cityMap, statisticsEditor);
         cityMap.getChildren().add(cityMapListener);
         cityMapListener.toFront();
         cityMapListener.setViewOrder(-100);
@@ -54,7 +56,7 @@ public class PolisCompanion {
             }
         });
         // Simulator aanmaken
-        simulator = new Simulator(cityMap, buttonSimulator);
+        simulator = new Simulator(cityMap, buttonSimulator, statisticsEditor);
         labelStatistics.setText("Bewoners: 0 / 0.0" + "\n" + "Jobs: 0 / 0.0" + "\n" +
                 "Goederen: 0 / 0.0" + "\n" + "Klanten: 0 / 0.0");
     }

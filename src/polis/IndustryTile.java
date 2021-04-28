@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class IndustryTile extends BuildingTile {
 
-    private ArrayList<Actor> workers;
+    private final ArrayList<Actor> workers;
 
     public IndustryTile(int cellsize, int r, int k, Map<PolygonTile, Paint> originalPaint) {
         super(cellsize, r, k, originalPaint);

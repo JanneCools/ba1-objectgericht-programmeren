@@ -2,7 +2,6 @@ package polis;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,7 +17,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
     // Ik gebruik extra klassen als soort van "subluisteraars" (maar deze klassen implementeren de interface
     // InvalidationListener niet) die zich bezighouden met 1 soort tegel.
     // Deze klasse "CityMapListener" ontvangt dus alle veranderingen en laat RoadListener en BuildingListener
-    // de veranderingen aanbrengen die horen bij een specifiek soort tegel.
+    // de veranderingen aanbrengen die horen bij dat specifiek soort tegel.
     private final RoadListener roadListener;
     private final BuildingListener buildingListener;
 
@@ -53,7 +52,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
             "selection", this::showStatistics, "road", () -> {}
     );
 
-    public CityMapListener(CityMap model, Label labelTitle, Label labelStatistics) {
+    public CityMapListener(CityMap model, StatisticsEditor statisticsEditor) {
         setId("cityMapListener");
         this.model = model;
         model.addListener(this);
@@ -66,7 +65,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
         key = "";
         roadListener = new RoadListener(model, this, originalPaint);
         buildingListener = new BuildingListener(model, this, originalPaint);
-        statisticsEditor = new StatisticsEditor(labelTitle, labelStatistics, model.userPolygons);
+        this.statisticsEditor = statisticsEditor;
     }
 
     @Override
@@ -115,7 +114,7 @@ public class CityMapListener extends Pane implements InvalidationListener {
     }
 
     // Hier bereken ik de (rij- en kolom-)coördinaten o.b.v de coördinaten van de muis.
-    // Deze rij- en kolom coördinaten vormen de sleutel van de map "polygonMap" en de map "userPolygons"
+    // Deze rij- en kolomcoördinaten vormen de sleutel van de map "polygonMap" en de map "userPolygons"
     // in de klasse CityMap.
     private String getKey(MouseEvent mouseEvent) {
         double x = mouseEvent.getX();
@@ -190,8 +189,10 @@ public class CityMapListener extends Pane implements InvalidationListener {
     private void showStatistics() {
         if (model.userPolygons.containsKey(key)) {
             statisticsEditor.showStats(model.userPolygons.get(key));
+            statisticsEditor.setPressed(true);
         } else if (model.getPolygonMap().containsKey(key)) {
             statisticsEditor.showStats(model.getPolygonMap().get(key));
+            statisticsEditor.setPressed(true);
         }
     }
 }

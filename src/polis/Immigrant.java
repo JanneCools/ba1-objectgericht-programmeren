@@ -23,7 +23,7 @@ public class Immigrant extends MovingActor {
     @Override
     public void destinationNotFound() {
         simulator.changeTempo(true);
-        removeActor();
+        simulator.removeActor(this);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class Immigrant extends MovingActor {
         Sleeper sleeper = new Sleeper(r, k, model, simulator, building);
         building.addActor(sleeper);
         simulator.addActor(sleeper);
-        removeActor();
+        simulator.removeActor(this);
     }
 }

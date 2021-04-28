@@ -3,9 +3,7 @@ package polis;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
-
 import java.util.*;
-
 
 public class PolygonTile extends Polygon {
 
@@ -50,6 +48,7 @@ public class PolygonTile extends Polygon {
     }
 
     // Deze methode wordt enkel overschreven door RoadTile, voor alle andere polygons doet deze methode niets
+    // (korte uitleg staat in klasse RoadTile).
     public void changeBackground(CityMap model, Map<PolygonTile, Paint> originalPaint, boolean firstTime) {}
 
     public void checkNeighbourRoads(CityMap cityMap, Map<PolygonTile, Paint> originalPaint) {
@@ -81,9 +80,9 @@ public class PolygonTile extends Polygon {
         return neighbours;
     }
 
-    // Deze methodes worden gebruikt door de klasse StatisticsPanel voor het infopaneel
+    // Deze methodes worden gebruikt door de klasse StatisticsEditor voor het infopaneel
     // en worden overschreven door de subklassen (soms door meerdere subklassen, soms door 1).
-    // Hierdoor moet ik in de methodes van de klasse StatisticsPanel niet nakijken of een gebouw van het juiste
+    // Hierdoor moet ik in de methodes van de klasse StatisticsEditor niet nakijken of een gebouw van het juiste
     // type is ("commerce", "industry" of "residence").
     public double getResidenceCapacity() {
         return 0.0;

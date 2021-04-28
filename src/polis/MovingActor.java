@@ -13,7 +13,7 @@ public abstract class MovingActor extends Actor {
     private int direction;
 
     // Deze array wordt gebruikt in de methode "changeDirection". Op basis van de parameter "value"
-    // wordt het veld "direction" met een bepaald getal verhogd of verlaagd.
+    // wordt het veld "direction" met een bepaald getal verhoogd of verlaagd.
     private static final int[] CHANGE_DIRECTION = {-1, 1, 0, 2};
 
     /*
@@ -23,11 +23,11 @@ public abstract class MovingActor extends Actor {
      om de tegel links van de acteur te bekomen, bij index 1 om de tegel rechts te bekomen, bij index 2 de
      tegel voor de acteur en index 3 achter de acteur (analoog voor de array directionsK).
     */
-    private static final Map<Integer, int[]> directionsR = Map.of(
+    private static final Map<Integer, int[]> DIRECTIONS_R = Map.of(
             0, new int[]{0, 0, -1, 1}, 1, new int[]{-1, 1, 0, 0},
             2, new int[]{0, 0, 1, -1}, 3, new int[]{1, -1, 0, 0}
     );
-    private static final Map<Integer, int[]> directionsK = Map.of(
+    private static final Map<Integer, int[]> DIRECTIONS_K = Map.of(
             0, new int[]{-1, 1, 0, 0}, 1, new int[]{0, 0, 1, -1},
             2, new int[]{1, -1, 0, 0}, 3, new int[]{0, 0, -1, 1}
     );
@@ -47,21 +47,22 @@ public abstract class MovingActor extends Actor {
     public abstract String getActorType();
 
     public void act() {
-        if (age != 0 && arrivedAtDestination() == null) {
+        String destination = arrivedAtDestination();
+        if (age != 0 && destination == null) {
             int index = 0;
             boolean canMove = false;
             ArrayList<Integer> indices = randomNumbers();
             // Nakijken of de acteur vooruit, naar links of naar recht kan bewegen (in willekeurige volgorde).
             while (index < 3 && ! canMove) {
-                int destR = r + directionsR.get(direction)[indices.get(index)];
-                int destK = k + directionsK.get(direction)[indices.get(index)];
+                int destR = r + DIRECTIONS_R.get(direction)[indices.get(index)];
+                int destK = k + DIRECTIONS_K.get(direction)[indices.get(index)];
                 canMove = move(destR, destK);
                 index ++;
             }
             // Achteruit bewegen als er geen andere mogelijkheid is.
             if (! canMove) {
-                int destR = r + directionsR.get(direction)[3];
-                int destK = k + directionsK.get(direction)[3];
+                int destR = r + DIRECTIONS_R.get(direction)[3];
+                int destK = k + DIRECTIONS_K.get(direction)[3];
                 move(destR, destK);
             }
             changeDirection(indices.get(index-1));
@@ -69,13 +70,13 @@ public abstract class MovingActor extends Actor {
         } else if (age == 0) {
             destinationNotFound();
         } else {
-            enterBuilding(arrivedAtDestination());
+            enterBuilding(destination);
         }
     }
 
     public String arrivedAtDestination() {
-        String keyLeft = (r+directionsR.get(direction)[0]) + "-" + (k+directionsK.get(direction)[0]);
-        String keyRight = (r+directionsR.get(direction)[1]) + "-" + (k+directionsK.get(direction)[1]);
+        String keyLeft = (r+ DIRECTIONS_R.get(direction)[0]) + "-" + (k+ DIRECTIONS_K.get(direction)[0]);
+        String keyRight = (r+ DIRECTIONS_R.get(direction)[1]) + "-" + (k+ DIRECTIONS_K.get(direction)[1]);
         String arrived = null;
         // Enkel als de acteur zich bij het juiste gebouw bevindt die nog voldoende capaciteit heeft,
         // heeft de acteur zijn bestemming bereikt.
@@ -144,5 +145,4 @@ public abstract class MovingActor extends Actor {
             //Doe niets
         }
     }
-
 }

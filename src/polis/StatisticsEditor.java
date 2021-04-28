@@ -10,6 +10,10 @@ public class StatisticsEditor {
     private final Label labelStatistics;
     private final Map<String, PolygonTile> userpolygons;
 
+    // Het veld "pressed" wordt gebruikt door de klasse Simulator. Als het true geeft, betekent het dat
+    // de gebruiker statistieken wilt zien (m.a.w. de gebruiker heeft met de selectie-muis op een tegel gedrukt).
+    private boolean pressed;
+
     // Alle benodige statistieken
     private double residentCapacity;
     private double jobCapacity;
@@ -35,11 +39,22 @@ public class StatisticsEditor {
         this.labelTitle = labelTitle;
         this.labelStatistics = labelStatistics;
         this.userpolygons = userpolygons;
+        pressed = false;
+    }
+
+    public boolean isPressed() {
+        return pressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
     }
 
     public void showStats(PolygonTile polygonTile) {
-        tile = polygonTile;
-        METHODS_FOR_STATS.get(polygonTile.getBackground()).run();
+        if (polygonTile != null) {
+            tile = polygonTile;
+        }
+        METHODS_FOR_STATS.get(tile.getBackground()).run();
     }
 
     private void showResidenceStats() {

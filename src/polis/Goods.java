@@ -24,7 +24,7 @@ public class Goods extends MovingActor {
     @Override
     public void destinationNotFound() {
         changeHomeCapacity(industry, "factor.goods.not.delivered");
-        removeActor();
+        simulator.removeActor(this);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class Goods extends MovingActor {
         changeHomeCapacity(industry, "factor.goods.delivered");
         BuildingTile shop = (BuildingTile) model.userPolygons.get(buildingKey);
         shop.addActor(this);
-        removeActor();
+        simulator.removeActor(this);
     }
 }

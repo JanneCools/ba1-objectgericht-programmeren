@@ -26,6 +26,6 @@ public class Customer extends StaticActor {
             home.changeResident(this, sleeper);
             simulator.addActor(sleeper);
         }
-        removeActor();
+        simulator.removeActor(this);
     }
 }
